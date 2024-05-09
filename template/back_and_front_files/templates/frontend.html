@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neuroglancer Segment Properties Interface</title>
+<!-- Add jQuery library for AJAX calls -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<h1>Neuroglancer Segment Properties Interface</h1>
+
+<!-- Form to Select Datastack -->
+<div>
+  <h2>Select Datastack</h2>
+  <select id="datastackSelect">
+      {% for datastack in datastacks %}
+          <option value="{{ datastack }}">{{ datastack }}</option>
+      {% endfor %}
+  </select>
+  <button onclick="selectDatastack()">Select</button>
+</div>
+
+<!-- Dropdown menu to select tables -->
+<div>
+  <h2>Select Table</h2>
+  <select id="tableSelect">
+    <!-- Options will be dynamically added here -->
+  </select>
+  <button onclick="generateUrl()">Generate URL</button>
+</div>
+
+  <h2>Generated Neuroglancer URL:</h2>
+<div>
+    <!-- Display and copy the URL-->
+    <a id="url" href="#" target="_blank"> </a>
+    <button onclick="copyToClipboard()">Copy to Clipboard</button>
+</div>
+<script>
+
+function selectDatastack() {
+  var selectedDatastack = $('#datastackSelect').val();
+  // AJAX call to fetch available tables for the selected datastack
+  $.post('/fetch_tables', { datastack: selectedDatastack }, function(response) {
+    // Handle response from backend
+    // Update the dropdown menu options with the fetched tables
+    $('#tableSelect').empty(); // Clear existing options
+    $.each(response.tables, function(index, table) {
+      $('#tableSelect').append($('<option>', {
+        value: table.value,
+        text: table.label
+      }));
+    });
+  });
+}
+
+function generateUrl() {
+    var datastack = $('#datastackSelect').val();
+    var table = $('#tableSelect').val();
+    
+    $.post('/generate_url', { datastack: datastack, table: table }, function(response) {
+      if (response.url) {
+        $('#url').attr('href', response.url).text(response.url);
+      } else if (response.error) {
+        alert("Failed to generate URL: " + response.error);
+      }
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+      alert("Request failed: " + textStatus + ", " + errorThrown);
+    });
+  }
+  
+  function copyToClipboard() {
+    var urlToCopy = document.getElementById('url').href; // Get the href attribute of the link
+    navigator.clipboard.writeText(urlToCopy).then(function() {
+      alert('URL copied to clipboard!');
+    }, function(err) {
+      alert('Error in copying URL: ' + err);
+    });
+  }
+  
+
+</script>
+
+</body>
+</html>
