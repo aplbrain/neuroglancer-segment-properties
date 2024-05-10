@@ -8,11 +8,11 @@ The involves selecting a datastack using CAVEclient and a corresponding table fr
 # Setting Up
 **Installation**
 Upgrade pip and install required packages:
-> python -m pip install --upgrade pip
-> pip install Flask caveclient pandas numpy
+`python -m pip install --upgrade pip`
+`pip install Flask caveclient pandas numpy`
 
 **Running the Application** 
 To start the server and run the application, navigate to the project directory and execute:
-> python app.py
+`python app.py`
 
 
