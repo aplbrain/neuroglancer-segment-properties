@@ -3,8 +3,7 @@ This system is designed to enable users to generate URLs that link to specific s
 
 The involves selecting a datastack using CAVEclient and a corresponding table from a dropdown menu, which then triggers a server-side computation to generate a URL that points directly to the configured view in Neuroglancer.
 
-![Outline](https://github.com/aplbrain/neuroglancer-segment-properties/assets/66258538/9063501c-bb9b-433a-99c6-caf092245569)
-
+![Pipeline](https://github.com/aplbrain/neuroglancer-segment-properties/assets/66258538/d256ad0d-3493-4f0d-97c2-acffca669afe)
 # Setting Up
 **Installation**
 Upgrade pip and install required packages:
